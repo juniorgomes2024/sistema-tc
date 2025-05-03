@@ -48,18 +48,17 @@ if ($stmt->execute()) {
     $stmtEstado = $conn->prepare("INSERT INTO estado (UF, descricao) VALUES (?, ?)");
     $stmtEstado->bind_param("ss", $uf, $uf);
 
+    // Inserir senha na tabela Usuario
+    $stmtUser = $conn->prepare("INSERT INTO Usuario (idCliente, senha) VALUES (?, ?)");
+    $stmtUser->bind_param("is", $idCliente, $senha);
+    $stmtUser->execute();
+
     echo "<script>alert('Cadastro realizado com sucesso!'); window.location.href='../front-end/login.html';</script>";
 } else {
     echo "Erro ao cadastrar: " . $stmt->error;
 }
 
 $conn->close();
-
-// Inserir senha na tabela Usuario
-$stmtUser = $conn->prepare("INSERT INTO Usuario (idCliente, senha) VALUES (?, ?)");
-$stmtUser->bind_param("is", $idCliente, $senha);
-$stmtUser->execute();
-
 
 // Verifica se o Estado já existe
 $stmtEstado = $conn->prepare("SELECT idEstado FROM Estado WHERE UF = ?");
