@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 03-Maio-2025 às 22:52
+-- Tempo de geração: 06-Maio-2025 às 01:24
 -- Versão do servidor: 10.10.2-MariaDB
 -- versão do PHP: 8.0.26
 
@@ -70,7 +70,14 @@ CREATE TABLE IF NOT EXISTS `cidade` (
   `idEstado` int(11) DEFAULT NULL,
   PRIMARY KEY (`idCidade`),
   KEY `idEstado` (`idEstado`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Extraindo dados da tabela `cidade`
+--
+
+INSERT INTO `cidade` (`idCidade`, `descricao`, `idEstado`) VALUES
+(1, 'Capital', 1);
 
 -- --------------------------------------------------------
 
@@ -85,7 +92,7 @@ CREATE TABLE IF NOT EXISTS `cliente` (
   `cpfCnpj` varchar(20) DEFAULT NULL,
   `dataNasc` date DEFAULT NULL,
   PRIMARY KEY (`idCliente`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Extraindo dados da tabela `cliente`
@@ -93,7 +100,8 @@ CREATE TABLE IF NOT EXISTS `cliente` (
 
 INSERT INTO `cliente` (`idCliente`, `nome`, `cpfCnpj`, `dataNasc`) VALUES
 (3, 'mel', '0296547892', '2025-05-01'),
-(4, 'lucas', '02878954566', '2025-05-02');
+(4, 'lucas', '02878954566', '2025-05-02'),
+(7, 'ademir', '0296547892', '2025-05-05');
 
 -- --------------------------------------------------------
 
@@ -108,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `email` (
   `idCliente` int(11) DEFAULT NULL,
   PRIMARY KEY (`idEmail`),
   KEY `idCliente` (`idCliente`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Extraindo dados da tabela `email`
@@ -117,7 +125,10 @@ CREATE TABLE IF NOT EXISTS `email` (
 INSERT INTO `email` (`idEmail`, `email`, `idCliente`) VALUES
 (1, 'mel123@gmail.com', 2),
 (2, 'mel1233@gmail.com', 3),
-(3, 'junior@gmail.com', 4);
+(3, 'junior@gmail.com', 4),
+(4, 'conexaoanimessos@gmail.com', 5),
+(5, 'conexaoanimessos@gmail.com', 6),
+(6, 'conexaoanimessos@gmail.com', 7);
 
 -- --------------------------------------------------------
 
@@ -135,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `endereco` (
   PRIMARY KEY (`idEndereco`),
   KEY `idCliente` (`idCliente`),
   KEY `idCidade` (`idCidade`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Extraindo dados da tabela `endereco`
@@ -144,7 +155,10 @@ CREATE TABLE IF NOT EXISTS `endereco` (
 INSERT INTO `endereco` (`idEndereco`, `logradouro`, `complemento`, `idCliente`, `idCidade`) VALUES
 (1, 'rua telma qd64', '', 2, 1),
 (2, 'goiania', '', 3, 1),
-(3, 'goiania', '', 4, 1);
+(3, 'goiania', '', 4, 1),
+(4, NULL, '', 5, 1),
+(5, NULL, '', 6, 1),
+(6, NULL, '', 7, 1);
 
 -- --------------------------------------------------------
 
@@ -174,7 +188,14 @@ CREATE TABLE IF NOT EXISTS `estado` (
   `UF` char(2) DEFAULT NULL,
   `descricao` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idEstado`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Extraindo dados da tabela `estado`
+--
+
+INSERT INTO `estado` (`idEstado`, `UF`, `descricao`) VALUES
+(1, 'GO', 'GO');
 
 -- --------------------------------------------------------
 
@@ -221,9 +242,19 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `preco` decimal(10,2) DEFAULT NULL,
   `imagem` varchar(255) DEFAULT NULL,
   `idCategoria` int(11) DEFAULT NULL,
+  `quantidade` int(11) NOT NULL,
   PRIMARY KEY (`idProduto`),
   KEY `idCategoria` (`idCategoria`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Extraindo dados da tabela `produto`
+--
+
+INSERT INTO `produto` (`idProduto`, `nome`, `descricao`, `preco`, `imagem`, `idCategoria`, `quantidade`) VALUES
+(1, 'cartÃ£o visita', 'n/a', '15.02', NULL, NULL, 100),
+(2, 'cartÃ£o visita', 'n/a', '15.02', NULL, NULL, 100),
+(3, 'cartÃ£o visita', 'n/a', '15.02', NULL, NULL, 100);
 
 -- --------------------------------------------------------
 
@@ -238,7 +269,7 @@ CREATE TABLE IF NOT EXISTS `telefone` (
   `idCliente` int(11) DEFAULT NULL,
   PRIMARY KEY (`idTelefone`),
   KEY `idCliente` (`idCliente`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Extraindo dados da tabela `telefone`
@@ -246,7 +277,10 @@ CREATE TABLE IF NOT EXISTS `telefone` (
 
 INSERT INTO `telefone` (`idTelefone`, `numero`, `idCliente`) VALUES
 (1, '6298711548', 3),
-(2, '6288444666', 4);
+(2, '6288444666', 4),
+(3, '6298711546', 5),
+(4, '6298711546', 6),
+(5, '6298711546', 7);
 
 -- --------------------------------------------------------
 
