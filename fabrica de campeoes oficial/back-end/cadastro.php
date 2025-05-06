@@ -18,13 +18,13 @@ $logradouro = $_POST['logradouro'];
 $uf = $_POST['uf'];
 $endereco = $_POST['endereco'];  // Se não for usar, remova do HTML
 $cpf_cnpj = $_POST['cpf_cnpj'];
-$datanasc = $_POST['data_nasc'];
+$datanasc = $_POST['datanasc'];
 $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); // Criptografia segura da senha
 
 
 // Inserir cliente
-$stmt = $conn->prepare("INSERT INTO cliente (nome, cpfCnpj, dataNasc) VALUES (?, ?, CURDATE())");
-$stmt->bind_param("ss", $nome, $cpfCnpj, $datanasc);
+$stmt = $conn->prepare("INSERT INTO cliente (nome, cpfCnpj, dataNasc) VALUES (?, ?, ?)");
+$stmt->bind_param("sss", $nome, $cpf_cnpj, $datanasc);
 
 if ($stmt->execute()) {
     $idCliente = $stmt->insert_id;
@@ -48,17 +48,13 @@ if ($stmt->execute()) {
     $stmtEstado = $conn->prepare("INSERT INTO estado (UF, descricao) VALUES (?, ?)");
     $stmtEstado->bind_param("ss", $uf, $uf);
 
-    // Inserir senha na tabela Usuario
-    $stmtUser = $conn->prepare("INSERT INTO Usuario (idCliente, senha) VALUES (?, ?)");
-    $stmtUser->bind_param("is", $idCliente, $senha);
-    $stmtUser->execute();
+    
 
     echo "<script>alert('Cadastro realizado com sucesso!'); window.location.href='../front-end/login.html';</script>";
 } else {
     echo "Erro ao cadastrar: " . $stmt->error;
 }
 
-$conn->close();
 
 // Verifica se o Estado já existe
 $stmtEstado = $conn->prepare("SELECT idEstado FROM Estado WHERE UF = ?");
@@ -93,5 +89,7 @@ if ($resultCidade->num_rows > 0) {
     $stmtInsertCidade->execute();
     $idCidade = $stmtInsertCidade->insert_id;
 }
+
+$conn->close();
 
 ?>

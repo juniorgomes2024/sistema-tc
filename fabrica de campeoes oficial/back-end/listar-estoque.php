@@ -5,7 +5,7 @@ if ($conn->connect_error) {
   die("Conexão falhou: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM produtos";
+$sql = "SELECT * FROM produto";
 $result = $conn->query($sql);
 ?>
 
@@ -35,7 +35,7 @@ $result = $conn->query($sql);
     if ($result->num_rows > 0) {
       while($row = $result->fetch_assoc()) {
         echo "<tr>
-          <td>{$row['id']}</td>
+          <td>{$row['idProduto']}</td>
           <td>{$row['nome']}</td>
           <td>{$row['descricao']}</td>
           <td>{$row['quantidade']}</td>
