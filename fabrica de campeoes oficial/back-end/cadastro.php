@@ -19,12 +19,12 @@ $uf = $_POST['uf'];
 $endereco = $_POST['endereco'];  // Se não for usar, remova do HTML
 $cpf_cnpj = $_POST['cpf_cnpj'];
 $datanasc = $_POST['datanasc'];
-$senha = password_hash($_POST['senha'], PASSWORD_DEFAULT); // Criptografia segura da senha
+$senha = $_POST['senha']; 
 
 
 // Inserir cliente
-$stmt = $conn->prepare("INSERT INTO cliente (nome, cpfCnpj, dataNasc) VALUES (?, ?, ?)");
-$stmt->bind_param("sss", $nome, $cpf_cnpj, $datanasc);
+$stmt = $conn->prepare("INSERT INTO cliente (nome, cpfCnpj, dataNasc, senha) VALUES (?, ?, ?,?)");
+$stmt->bind_param("ssss", $nome, $cpf_cnpj, $datanasc, $senha);
 
 if ($stmt->execute()) {
     $idCliente = $stmt->insert_id;
@@ -47,6 +47,8 @@ if ($stmt->execute()) {
     // estado
     $stmtEstado = $conn->prepare("INSERT INTO estado (UF, descricao) VALUES (?, ?)");
     $stmtEstado->bind_param("ss", $uf, $uf);
+
+    
 
     
 
