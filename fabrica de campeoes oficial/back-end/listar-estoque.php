@@ -28,6 +28,9 @@ $result = $conn->query($sql);
   </style>
 </head>
 <body>
+  <p><a href="../front-end/estoque.html">Cadastrar Estoque</a></p>
+  <p><a href="../front-end/gestao.html">Dashboard</a></p>
+
   <h1>Produtos em Estoque</h1>
   <table>
     <tr>
