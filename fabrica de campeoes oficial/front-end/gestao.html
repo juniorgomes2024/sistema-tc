@@ -7,6 +7,20 @@
   <link rel="shortcut icon" href="imagens/favicon.jpeg" type="image/x-icon" />
   <script src="gestão.js" defer></script>
   <title>Painel da Proprietária | Gestão</title>
+  <script>
+    // Atualizar os dados do painel - Requisição AJAX
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../back-end/gestao.php')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('totalPedidos').textContent = data.totalPedidos;
+          document.getElementById('totalClientes').textContent = data.totalClientes;
+          // document.getElementById('faturamentoTotal').textContent = 'R$ ' + parseFloat(data.faturamentoTotal).toFixed(2);
+          // document.getElementById('produtosEmEstoque').textContent = data.produtosEmEstoque;
+        })
+        .catch(error => console.error('Erro ao buscar dados: ', error));
+    });
+  </script>
 </head>
 <body class="animated-background">
   <div class="stars"></div>
@@ -24,23 +38,26 @@
       <section class="dashboard">
         <div class="card">
           <h2>Total de Pedidos</h2>
-          <p>120</p>
+          <p id="totalPedidos"></p>
         </div>
         <div class="card">
           <h2>Total de Clientes</h2>
-          <p>75</p>
+          <p id="totalClientes"></p>
         </div>
         <div class="card">
           <h2>Faturamento Total</h2>
           <p>R$ 32.500,00</p>
+          <!-- <p id="faturamentoTotal"></p> -->
         </div>
         <div class="card">
           <h2>Produtos em Estoque</h2>
           <p>312</p>
+          <!-- <p id="produtosEmEstoque"></p> -->
         </div>
         <div class="card">
           <h2>Avaliações Positivas</h2>
           <p>4.8 ★</p>
+          <!-- <p id="avaliacoesPositivas"></p> -->
         </div>
       </section>
 
