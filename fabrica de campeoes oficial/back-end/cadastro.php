@@ -20,7 +20,7 @@ $uf = $_POST['uf'];
 $endereco = $_POST['endereco'];  // Se não for usar, remova do HTML
 $cpf_cnpj = $_POST['cpf_cnpj'];
 $datanasc = $_POST['datanasc'];
-$senha = $_POST['senha']; 
+$senha = md5($_POST['senha']); 
 
 
 // Inserir cliente
