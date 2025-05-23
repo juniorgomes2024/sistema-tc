@@ -48,6 +48,12 @@ if ($stmt->execute()) {
     // estado
     $stmtEstado = $conn->prepare("INSERT INTO estado (UF, descricao) VALUES (?, ?)");
     $stmtEstado->bind_param("ss", $uf, $uf);
+    $stmtEstado->execute();
+    
+    // Usuario
+    $stmtUsuario = $conn->prepare("INSERT INTO usuario (idCliente, senha) VALUES (?, ?)");
+    $stmtUsuario->bind_param("is", $idCliente, $senha);
+    $stmtUsuario->execute();
 
     
 
