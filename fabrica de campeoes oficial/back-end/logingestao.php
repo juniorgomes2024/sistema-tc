@@ -2,10 +2,15 @@
 include 'entradaadm.php';
 
 $email = $_POST['email'];
-$senha = $_POST['password'];
+$senha = md5($_POST['password']);
+
+/*
+Senha criptografada md5
+12345 → 827ccb0eea8a706c4c34a16891f84e7b
+*/
 
 $Bd = new entradaadm();
-$usuario = $Bd->select("SELECT * FROM adm WHERE email = '$email' AND senha = md5('$senha')");
+$usuario = $Bd->select("SELECT * FROM adm WHERE email = '$email' AND senha = '$senha'");
 
 if (!empty($usuario)) {
     session_start();
