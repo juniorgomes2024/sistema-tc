@@ -32,11 +32,32 @@ $produtosEmEstoque = $result->fetch_assoc();
 $result = $conn->query("SELECT FORMAT(AVG(avaliaCompra), 1) AS media FROM pedido");
 $mediaAvaliacao = $result->fetch_assoc();
 
+//ultimos pedidos
+$result = $conn->query("SELECT 
+  p.protCompra,
+  c.nome AS nomeCliente,
+  t.numero AS telefone,
+  p.dtPedido AS dataPedido,
+  pr.nome AS nomeProduto,
+  pr.descricao AS descricaoProduto
+FROM 
+  pedido as p
+  INNER JOIN cliente as c ON p.idCliente = c.idCliente
+  INNER JOIN telefone as t ON c.idCliente = t.idCliente
+  INNER JOIN produto as pr ON p.idEstoque = pr.idProduto
+  ORDER BY p.dtPedido DESC
+  LIMIT 5 ");
+$ultimosPedidos = $result->fetch_all(MYSQLI_ASSOC);
+
+//Encerra conexão
+$conn->close();
+
 echo json_encode(array(
     'totalPedidos' => $totalPedidos['total'],
     'totalClientes' => $totalClientes['total'],
     'faturamentoTotal' => $faturamentoTotal['total'],
     'produtosEmEstoque' => $produtosEmEstoque['total'],
-    'mediaAvaliacao' => $mediaAvaliacao['media']
+    'mediaAvaliacao' => $mediaAvaliacao['media'],
+    'ultimosPedidos' => $ultimosPedidos
 ));
 
