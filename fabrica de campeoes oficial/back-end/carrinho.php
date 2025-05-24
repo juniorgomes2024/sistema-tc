@@ -33,13 +33,13 @@ function cadastrarPedidoCarrinho($conn, $itens) {
     }
 
     foreach ($itens as $item) {
-        $nome = $item['nome'];
-        $preco = $item['preco'];
+        $idEstoque = $item['id'];
+        $descricao = $item['nome'];
         $quantidade = $item['quantidade'];
-        // $total = $item['total']; precisamos cadastrar o valor para recuperar no dashboard
+        $vlCompra = $item['total'];
 
-        $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("isis", $idCliente, $nome, $quantidade, $dtPedido);
+        $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido, idEstoque, vlCompra) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isisid", $idCliente, $descricao, $quantidade, $dtPedido, $idEstoque, $vlCompra);
         $stmt->execute();
     }
 
