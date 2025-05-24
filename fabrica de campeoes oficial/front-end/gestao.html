@@ -18,6 +18,20 @@
           document.getElementById('faturamentoTotal').textContent = 'R$ ' + parseFloat(data.faturamentoTotal).toFixed(2);
           document.getElementById('produtosEmEstoque').textContent = data.produtosEmEstoque;
           document.getElementById('mediaAvaliacao').textContent = data.mediaAvaliacao + ' ★';
+          
+          const tbody = document.getElementById('ultimosPedidos');
+          data.ultimosPedidos.forEach(pedido => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${pedido.protCompra}</td>
+              <td>${pedido.nomeCliente}</td>
+              <td>${pedido.telefone}</td>
+              <td>${pedido.dataPedido}</td>
+              <td>${pedido.nomeProduto}</td>
+              <td>${pedido.descricaoProduto}</td>
+            `;
+            tbody.appendChild(row);
+          });
         })
         .catch(error => console.error('Erro ao buscar dados: ', error));
     });
@@ -72,31 +86,7 @@
               <th>Descrição</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>#00123</td>
-              <td>João Silva</td>
-              <td>(11) 91234-5678</td>
-              <td>15/03/2025</td>
-              <td>Notebook</td>
-              <td>Notebook Dell i5 8GB</td>
-            </tr>
-            <tr>
-              <td>#00124</td>
-              <td>Maria Oliveira</td>
-              <td>(21) 93456-7890</td>
-              <td>14/03/2025</td>
-              <td>Smartphone</td>
-              <td>Samsung Galaxy A54</td>
-            </tr>
-            <tr>
-              <td>#00125</td>
-              <td>Lucas Santos</td>
-              <td>(31) 97890-1234</td>
-              <td>13/03/2025</td>
-              <td>Headset</td>
-              <td>Headset Bluetooth Gamer</td>
-            </tr>
+          <tbody id="ultimosPedidos">
           </tbody>
         </table>
       </section>
