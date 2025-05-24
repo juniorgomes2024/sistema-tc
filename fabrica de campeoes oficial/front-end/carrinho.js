@@ -104,3 +104,15 @@ function finalizarCompra(rating = null) {
       console.error('There was a problem with the fetch operation:', error);
     });
 }
+
+finalizarCompraButton.addEventListener('click', () => {
+  if (carrinhoEstaVazio()) {
+    alert('O carrinho está vazio. Adicione produtos para finalizar a compra.');
+    document.getElementById('modal-container').style.display = 'none';
+  } 
+});
+
+function carrinhoEstaVazio() {
+  const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+  return carrinho.length === 0;
+}
