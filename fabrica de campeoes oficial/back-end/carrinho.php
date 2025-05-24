@@ -19,27 +19,35 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     $itens = $carrinho;
 }
 
-session_start();
-$usuario = $_SESSION['usuario'];
-$idCliente = $usuario['idCliente'];
-$dtPedido = date('Y-m-d H:i:s');
+function cadastrarPedidoCarrinho($conn, $itens) {
+    session_start();
+    $usuario = $_SESSION['usuario'];
+    $idCliente = $usuario['idCliente'];
+    date_default_timezone_set('America/Sao_Paulo');
+    $dtPedido = date('Y-m-d H:i:s');
 
-if ($idCliente == null) {
-    http_response_code(401);
-    echo "Usuário não autenticado.";
-    exit;
+    var_dump($dtPedido).die();
+
+    if ($idCliente == null) {
+        http_response_code(401);
+        echo "Usuário não autenticado.";
+        exit;
+    }
+
+    foreach ($itens as $item) {
+        $nome = $item['nome'];
+        $preco = $item['preco'];
+        $quantidade = $item['quantidade'];
+        // $total = $item['total']; precisamos cadastrar o valor para recuperar no dashboard
+
+        $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("isis", $idCliente, $nome, $quantidade, $dtPedido);
+        $stmt->execute();
+    }
+
+    http_response_code(200);
+    echo "Itens processados com sucesso.";
 }
-// Inserir pedido
-foreach ($itens as $item) {
-    $nome = $item['nome'];
-    $preco = $item['preco'];
-    $quantidade = $item['quantidade'];
-    // $total = $item['total']; precisamos cadastrar o valor para recuperar no dashboard
 
-    $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("isis", $idCliente, $nome, $quantidade, $dtPedido);
-    $stmt->execute();
-}
+cadastrarPedidoCarrinho($conn, $itens);
 
-http_response_code(200);
-echo "Itens processados com sucesso.";
