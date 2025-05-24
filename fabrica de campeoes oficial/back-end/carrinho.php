@@ -19,10 +19,15 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
     $itens = $carrinho;
 }
 
-function cadastrarPedidoCarrinho($conn, $itens) {
-    session_start();
-    $usuario = $_SESSION['usuario'];
-    $idCliente = $usuario['idCliente'];
+session_start();
+$globalUsuario = $_SESSION['usuario'];
+
+function cadastrarPedidoCarrinho($conn, $itens) {  
+    // Gera um id_compra para ser cadastrado no banco
+    $protCompra = uniqid('#');
+    
+    global $globalUsuario;
+    $idCliente = $globalUsuario['idCliente'];
     date_default_timezone_set('America/Sao_Paulo');
     $dtPedido = date('Y-m-d H:i:s');
 
@@ -38,8 +43,8 @@ function cadastrarPedidoCarrinho($conn, $itens) {
         $quantidade = $item['quantidade'];
         $vlCompra = $item['total'];
 
-        $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido, idEstoque, vlCompra) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isisid", $idCliente, $descricao, $quantidade, $dtPedido, $idEstoque, $vlCompra);
+        $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido, idEstoque, vlCompra, protCompra) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isisids", $idCliente, $descricao, $quantidade, $dtPedido, $idEstoque, $vlCompra, $protCompra);
         $stmt->execute();
     }
 
