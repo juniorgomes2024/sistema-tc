@@ -37,14 +37,16 @@ function cadastrarPedidoCarrinho($conn, $itens) {
         exit;
     }
 
-    foreach ($itens as $item) {
+    $notaCompra = ($itens['rating'] == null) ? 0 : $itens['rating'];
+
+    foreach ($itens['itens'] as $item) {
         $idEstoque = $item['id'];
         $descricao = $item['nome'];
         $quantidade = $item['quantidade'];
         $vlCompra = $item['total'];
 
-        $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido, idEstoque, vlCompra, protCompra) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isisids", $idCliente, $descricao, $quantidade, $dtPedido, $idEstoque, $vlCompra, $protCompra);
+        $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido, idEstoque, vlCompra, avaliaCompra, protCompra) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isisisis", $idCliente, $descricao, $quantidade, $dtPedido, $idEstoque, $vlCompra, $notaCompra, $protCompra);
         $stmt->execute();
     }
 
