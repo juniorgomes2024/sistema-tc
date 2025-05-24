@@ -39,20 +39,13 @@ document.addEventListener("DOMContentLoaded", () => {
 const finalizarCompraButton = document.querySelector('button');
 
 finalizarCompraButton.addEventListener('click', () => {
-  const carrinhoTabela = document.getElementById('carrinho-tabela');
-  const linhas = carrinhoTabela.rows;
+  const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
   const itens = [];
 
-  for (let i = 0; i < linhas.length; i++) {
-    const linha = linhas[i];
-    const item = {
-      nome: linha.cells[0].textContent,
-      preco: linha.cells[1].textContent,
-      quantidade: linha.cells[2].textContent,
-      total: linha.cells[3].textContent
-    }; 
-    itens.push(item);
-  }
+  carrinho.forEach(item => {
+    const total = item.preco * item.quantidade;
+    itens.push({...item, total});
+  });
 
   // Envia os itens para o arquivo carrinho.php para cadastrar no banco
   fetch('../back-end/carrinho.php', {
