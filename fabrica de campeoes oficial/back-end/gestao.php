@@ -20,18 +20,23 @@ $totalPedidos = $result->fetch_assoc();
 $result = $conn->query("SELECT COUNT(*) as total FROM cliente");
 $totalClientes = $result->fetch_assoc();
 
-//Resgata valor total → total investido em produtos ou vendidos?
-// $result = $conn->query("SELECT SUM(valor) as total FROM pedidos");
-// $faturamentoTotal = $result->fetch_assoc();
+// Resgata valor total
+$result = $conn->query("SELECT SUM(vlCompra) as total FROM pedido");
+$faturamentoTotal = $result->fetch_assoc();
 
 //Resgata qtd produtos cadastrados
 $result = $conn->query("SELECT SUM(quantidade) as total FROM produto");
 $produtosEmEstoque = $result->fetch_assoc();
 
+// Resgata media de avaliacoes
+$result = $conn->query("SELECT FORMAT(AVG(avaliaCompra), 1) AS media FROM pedido");
+$mediaAvaliacao = $result->fetch_assoc();
+
 echo json_encode(array(
     'totalPedidos' => $totalPedidos['total'],
     'totalClientes' => $totalClientes['total'],
-    // 'faturamentoTotal' => $faturamentoTotal['total'],
-    'produtosEmEstoque' => $produtosEmEstoque['total']
+    'faturamentoTotal' => $faturamentoTotal['total'],
+    'produtosEmEstoque' => $produtosEmEstoque['total'],
+    'mediaAvaliacao' => $mediaAvaliacao['media']
 ));
 
