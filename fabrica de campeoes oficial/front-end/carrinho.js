@@ -62,23 +62,23 @@ finalizarCompraButton.addEventListener('click', () => {
     },
     body: JSON.stringify(itens)
   })
-  .then(response => {
-    if (response.ok) {
-      return response.text();
-    } else if (response.status == 401) {
-      alert('Usuário não autenticado. Favor logar novamente.');
-      location.href = 'login.html';
-    } else {
-      throw new Error('Erro ao encaminhar os itens para o carrinho.');
-    }
-  })
-  .then((data) => {
-    console.log(data);
-    localStorage.removeItem('carrinho');
-    //Redirecionamento
-    // location.href = 'loja.html';
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error);
-  });
+    .then(response => {
+      if (response.ok) {
+        return response.text();
+      } else if (response.status == 401) {
+        alert('Usuário não autenticado. Favor logar novamente.');
+        location.href = 'login.html';
+      } else {
+        throw new Error('Erro ao encaminhar os itens para o carrinho.');
+      }
+    })
+    .then((data) => {
+      console.log(data);
+      localStorage.removeItem('carrinho');
+      //Redirecionamento
+      // location.href = 'loja.html';
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+    });
 });
