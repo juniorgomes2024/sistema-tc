@@ -35,3 +35,46 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarCarrinho();
 });
 
+// Finalizar compra
+const finalizarCompraButton = document.querySelector('button');
+
+finalizarCompraButton.addEventListener('click', () => {
+  const carrinhoTabela = document.getElementById('carrinho-tabela');
+  const linhas = carrinhoTabela.rows;
+  const itens = [];
+
+  for (let i = 0; i < linhas.length; i++) {
+    const linha = linhas[i];
+    const item = {
+      nome: linha.cells[0].textContent,
+      preco: linha.cells[1].textContent,
+      quantidade: linha.cells[2].textContent,
+      total: linha.cells[3].textContent
+    }; 
+    itens.push(item);
+  }
+
+  // Envia os itens para o arquivo carrinho.php para cadastrar no banco
+  fetch('../back-end/carrinho.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(itens)
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Erro ao encaminhar os itens para o carrinho.');
+    }
+    return response.text();
+  })
+  .then((data) => {
+    console.log(data);
+    localStorage.removeItem('carrinho');
+    //Redirecionamento
+    // location.href = 'loja.html';
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error);
+  });
+});
