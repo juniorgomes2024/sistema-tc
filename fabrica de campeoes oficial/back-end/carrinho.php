@@ -23,6 +23,11 @@ session_start();
 $usuario = $_SESSION['usuario'];
 $idCliente = $usuario['idCliente'];
 
+if ($idCliente == null) {
+    http_response_code(401);
+    echo "Usuário não autenticado.";
+    exit;
+}
 // Inserir pedido
 foreach ($itens as $item) {
     $nome = $item['nome'];
