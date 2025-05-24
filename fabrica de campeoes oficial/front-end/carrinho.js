@@ -63,10 +63,14 @@ finalizarCompraButton.addEventListener('click', () => {
     body: JSON.stringify(itens)
   })
   .then(response => {
-    if (!response.ok) {
+    if (response.ok) {
+      return response.text();
+    } else if (response.status == 401) {
+      alert('Usuário não autenticado. Favor logar novamente.');
+      location.href = 'login.html';
+    } else {
       throw new Error('Erro ao encaminhar os itens para o carrinho.');
     }
-    return response.text();
   })
   .then((data) => {
     console.log(data);
