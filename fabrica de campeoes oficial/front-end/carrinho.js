@@ -98,7 +98,7 @@ function finalizarCompra(rating = null) {
       console.log(data);
       localStorage.removeItem('carrinho');
       //Redirecionamento
-      // location.href = 'loja.html';
+      location.href = 'carrinho.html';
     })
     .catch(error => {
       console.error('There was a problem with the fetch operation:', error);
