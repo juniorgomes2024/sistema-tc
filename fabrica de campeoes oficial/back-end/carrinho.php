@@ -22,6 +22,7 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'
 session_start();
 $usuario = $_SESSION['usuario'];
 $idCliente = $usuario['idCliente'];
+$dtPedido = date('Y-m-d H:i:s');
 
 if ($idCliente == null) {
     http_response_code(401);
@@ -35,8 +36,8 @@ foreach ($itens as $item) {
     $quantidade = $item['quantidade'];
     // $total = $item['total']; precisamos cadastrar o valor para recuperar no dashboard
 
-    $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade) VALUES (?, ?, ?)");
-    $stmt->bind_param("isi", $idCliente, $nome, $quantidade);
+    $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("isis", $idCliente, $nome, $quantidade, $dtPedido);
     $stmt->execute();
 }
 
