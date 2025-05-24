@@ -39,6 +39,35 @@ document.addEventListener("DOMContentLoaded", () => {
 const finalizarCompraButton = document.querySelector('button');
 
 finalizarCompraButton.addEventListener('click', () => {
+  document.getElementById('modal-container').style.display = 'block';
+});
+
+const modalContainer = document.getElementById('modal-container');
+const modalClose = document.getElementById('modal-close');
+const avaliacaoForm = document.getElementById('avaliacao-form');
+
+modalClose.addEventListener('click', finalizarCompra);
+
+window.addEventListener('click', (event) => {
+  if (event.target === modalContainer) {
+    finalizarCompra();
+  }
+});
+
+avaliacaoForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const rating = document.querySelector('input[name="rating"]:checked')?.value;
+  if (rating) {
+    alert(`Obrigado por avaliar!`);
+    finalizarCompra(rating);
+  } else {
+    alert('Por favor, selecione uma nota.');
+  }
+});
+
+function finalizarCompra(rating = null) {
+  modalContainer.style.display = 'none';
+
   const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
   const itens = [];
 
@@ -53,7 +82,7 @@ finalizarCompraButton.addEventListener('click', () => {
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(itens)
+    body: JSON.stringify({ itens, rating })
   })
     .then(response => {
       if (response.ok) {
@@ -62,7 +91,7 @@ finalizarCompraButton.addEventListener('click', () => {
         alert('Usuário não autenticado. Favor logar novamente.');
         location.href = 'login.html';
       } else {
-        throw new Error('Erro ao encaminhar os itens para o carrinho.');
+        throw new Error('Erro ao encaminhar os itens e nota para o carrinho.');
       }
     })
     .then((data) => {
@@ -74,4 +103,4 @@ finalizarCompraButton.addEventListener('click', () => {
     .catch(error => {
       console.error('There was a problem with the fetch operation:', error);
     });
-});
+}
