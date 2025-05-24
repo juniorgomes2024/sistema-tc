@@ -26,8 +26,6 @@ function cadastrarPedidoCarrinho($conn, $itens) {
     date_default_timezone_set('America/Sao_Paulo');
     $dtPedido = date('Y-m-d H:i:s');
 
-    var_dump($dtPedido).die();
-
     if ($idCliente == null) {
         http_response_code(401);
         echo "Usuário não autenticado.";
