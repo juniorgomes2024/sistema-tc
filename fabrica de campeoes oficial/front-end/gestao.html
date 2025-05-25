@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="gestão.css" />
   <link rel="shortcut icon" href="imagens/favicon.jpeg" type="image/x-icon" />
   <script src="gestão.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   <title>Painel da Proprietária | Gestão</title>
   <script>
     // Atualizar os dados do painel - Requisição AJAX
@@ -18,7 +19,8 @@
           document.getElementById('faturamentoTotal').textContent = 'R$ ' + parseFloat(data.faturamentoTotal).toFixed(2);
           document.getElementById('produtosEmEstoque').textContent = data.produtosEmEstoque;
           document.getElementById('mediaAvaliacao').textContent = data.mediaAvaliacao + ' ★';
-          
+
+          //Ultimos Pedidos
           const tbody = document.getElementById('ultimosPedidos');
           data.ultimosPedidos.forEach(pedido => {
             const row = document.createElement('tr');
@@ -32,6 +34,41 @@
             `;
             tbody.appendChild(row);
           });
+
+          //Data Graficos
+          // document.getElementById('graficosGeral').textContent = data.consultaGeral;
+          const ctx = document.getElementById('myChart').getContext('2d');
+            const chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                labels: data.consultaGeral.map(entry => entry.dataPedido),
+                datasets: [{
+                  label: 'Vendas',
+                  data: data.consultaGeral.map(entry => entry.totalVendas),
+                  backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)'
+                  ],
+                  borderColor: [
+                    'rgba(255, 99, 132, 1)'
+                  ],
+                  borderWidth: 1
+                }]
+              },
+              options: {
+                responsive: true,
+                title: {
+                  display: true,
+                  text: 'Vendas por Mês'
+                },
+                scales: {
+                  yAxes: [{
+                    ticks: {
+                      beginAtZero: true
+                    }
+                  }]
+                }
+              }
+            });
         })
         .catch(error => console.error('Erro ao buscar dados: ', error));
     });
@@ -96,6 +133,8 @@
         <!-- Aqui futuramente pode ser um gráfico com Chart.js -->
         <div class="card">
           <img src="imagens/grafico-exemplo.png" alt="Gráfico de desempenho" style="width:100%; border-radius: 10px;" />
+        <div>
+          <canvas id="myChart"></canvas>
         </div>
       </section>
     </main>
