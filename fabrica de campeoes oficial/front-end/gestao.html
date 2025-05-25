@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="gestão.css" />
   <link rel="shortcut icon" href="imagens/favicon.jpeg" type="image/x-icon" />
   <script src="gestão.js" defer></script>
@@ -38,60 +39,61 @@
           //Data Graficos
           // document.getElementById('graficosGeral').textContent = data.consultaGeral;
           const ctx = document.getElementById('myChart').getContext('2d');
-            const chart = new Chart(ctx, {
-              type: 'line',
-              data: {
-                labels: data.consultaGeral.map(entry => entry.dataPedido),
-                datasets: [{
-                  label: 'Vendas',
-                  data: data.consultaGeral.map(entry => entry.totalVendas),
-                  backgroundColor: [
-                    'rgba(255,218,185)'
-                  ],
-                  borderColor: [
-                    'rgba(255, 99, 132, 1)'
-                  ],
-                  borderWidth: 1
-                }]
+          const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+              labels: data.consultaGeral.map(entry => entry.dataPedido),
+              datasets: [{
+                label: 'Vendas',
+                data: data.consultaGeral.map(entry => entry.totalVendas),
+                backgroundColor: [
+                  'rgba(255,218,185)'
+                ],
+                borderColor: [
+                  'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              title: {
+                display: true,
+                text: 'Vendas por Dia',
+                fontColor: 'white'
               },
-              options: {
-                responsive: true,
-                title: {
-                  display: true,
-                  text: 'Vendas por Dia',
+              legend: {
+                labels: {
                   fontColor: 'white'
-                },
-                legend: {
-                  labels: {
-                    fontColor: 'white'
-                  }
-                },
-                scales: {
-                  yAxes: [{
-                    ticks: {
-                      beginAtZero: true,
-                      fontColor: 'white'
-                    },
-                    gridLines: {
-                      color: 'rgba(255, 255, 255, 0.1)'
-                    }
-                  }],
-                  xAxes: [{
-                    ticks: {
-                      fontColor: 'white'
-                    },
-                    gridLines: {
-                      color: 'rgba(255, 255, 255, 0.1)'
-                    }
-                  }]
                 }
+              },
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                    fontColor: 'white'
+                  },
+                  gridLines: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                  }
+                }],
+                xAxes: [{
+                  ticks: {
+                    fontColor: 'white'
+                  },
+                  gridLines: {
+                    color: 'rgba(255, 255, 255, 0.1)'
+                  }
+                }]
               }
-            });
+            }
+          });
         })
         .catch(error => console.error('Erro ao buscar dados: ', error));
     });
   </script>
 </head>
+
 <body class="animated-background">
   <div class="stars"></div>
 
@@ -151,11 +153,12 @@
         <!-- Aqui futuramente pode ser um gráfico com Chart.js -->
         <div class="card">
           <img src="imagens/grafico-exemplo.png" alt="Gráfico de desempenho" style="width:100%; border-radius: 10px;" />
-        <div>
-          <canvas id="myChart"></canvas>
-        </div>
+          <div>
+            <canvas id="myChart"></canvas>
+          </div>
       </section>
     </main>
   </div>
 </body>
+
 </html>
