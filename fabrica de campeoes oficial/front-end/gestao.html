@@ -46,7 +46,7 @@
                   label: 'Vendas',
                   data: data.consultaGeral.map(entry => entry.totalVendas),
                   backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)'
+                    'rgba(255,218,185)'
                   ],
                   borderColor: [
                     'rgba(255, 99, 132, 1)'
@@ -58,12 +58,30 @@
                 responsive: true,
                 title: {
                   display: true,
-                  text: 'Vendas por Mês'
+                  text: 'Vendas por Dia',
+                  fontColor: 'white'
+                },
+                legend: {
+                  labels: {
+                    fontColor: 'white'
+                  }
                 },
                 scales: {
                   yAxes: [{
                     ticks: {
-                      beginAtZero: true
+                      beginAtZero: true,
+                      fontColor: 'white'
+                    },
+                    gridLines: {
+                      color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                  }],
+                  xAxes: [{
+                    ticks: {
+                      fontColor: 'white'
+                    },
+                    gridLines: {
+                      color: 'rgba(255, 255, 255, 0.1)'
                     }
                   }]
                 }
