@@ -35,3 +35,84 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarCarrinho();
 });
 
+// Finalizar compra
+const finalizarCompraButton = document.querySelector('button');
+
+finalizarCompraButton.addEventListener('click', () => {
+  document.getElementById('modal-container').style.display = 'block';
+});
+
+const modalContainer = document.getElementById('modal-container');
+const modalClose = document.getElementById('modal-close');
+const avaliacaoForm = document.getElementById('avaliacao-form');
+
+modalClose.addEventListener('click', finalizarCompra);
+
+window.addEventListener('click', (event) => {
+  if (event.target === modalContainer) {
+    finalizarCompra();
+  }
+});
+
+avaliacaoForm.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const rating = document.querySelector('input[name="rating"]:checked')?.value;
+  if (rating) {
+    alert(`Obrigado por avaliar!`);
+    finalizarCompra(rating);
+  } else {
+    alert('Por favor, selecione uma nota.');
+  }
+});
+
+function finalizarCompra(rating = null) {
+  modalContainer.style.display = 'none';
+
+  const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+  const itens = [];
+
+  carrinho.forEach(item => {
+    const total = item.preco * item.quantidade;
+    itens.push({...item, total});
+  });
+
+  // Envia os itens para o arquivo carrinho.php para cadastrar no banco
+  fetch('../back-end/carrinho.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ itens, rating })
+  })
+    .then(response => {
+      if (response.ok) {
+        return response.text();
+      } else if (response.status == 401) {
+        alert('Usuário não autenticado. Favor logar novamente.');
+        location.href = 'login.html';
+      } else {
+        throw new Error('Erro ao encaminhar os itens e nota para o carrinho.');
+      }
+    })
+    .then((data) => {
+      console.log(data);
+      localStorage.removeItem('carrinho');
+      //Redirecionamento
+      location.href = 'carrinho.html';
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+    });
+}
+
+finalizarCompraButton.addEventListener('click', () => {
+  if (carrinhoEstaVazio()) {
+    alert('O carrinho está vazio. Adicione produtos para finalizar a compra.');
+    document.getElementById('modal-container').style.display = 'none';
+  } 
+});
+
+function carrinhoEstaVazio() {
+  const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+  return carrinho.length === 0;
+}

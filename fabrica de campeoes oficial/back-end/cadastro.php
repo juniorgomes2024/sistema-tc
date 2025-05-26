@@ -4,8 +4,9 @@ $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "fabricadecampeoes";
+$port = '3306';
 
-$conn = new mysqli($servername, $username, $password, $dbname);
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
 if ($conn->connect_error) {
     die("Erro na conexão: " . $conn->connect_error);
 }
@@ -19,7 +20,7 @@ $uf = $_POST['uf'];
 $endereco = $_POST['endereco'];  // Se não for usar, remova do HTML
 $cpf_cnpj = $_POST['cpf_cnpj'];
 $datanasc = $_POST['datanasc'];
-$senha = $_POST['senha']; 
+$senha = md5($_POST['senha']); 
 
 
 // Inserir cliente
@@ -47,6 +48,12 @@ if ($stmt->execute()) {
     // estado
     $stmtEstado = $conn->prepare("INSERT INTO estado (UF, descricao) VALUES (?, ?)");
     $stmtEstado->bind_param("ss", $uf, $uf);
+    $stmtEstado->execute();
+    
+    // Usuario
+    $stmtUsuario = $conn->prepare("INSERT INTO usuario (idCliente, senha) VALUES (?, ?)");
+    $stmtUsuario->bind_param("is", $idCliente, $senha);
+    $stmtUsuario->execute();
 
     
 

@@ -2,10 +2,10 @@
 include 'entradacliente.php';
 
 $email = $_POST['email'];
-$senha = $_POST['password'];
+$senha = md5($_POST['password']);
 
 $Bd = new entradacliente();
-$usuario = $Bd->select("SELECT * FROM cliente WHERE email = '$email' AND senha = md5('$senha')");
+$usuario = $Bd->select("SELECT * FROM cliente AS cl JOIN email AS em ON cl.idCliente = em.idCliente WHERE em.email = '$email' AND cl.senha = '$senha'");
 
 if (!empty($usuario)) {
     session_start();
