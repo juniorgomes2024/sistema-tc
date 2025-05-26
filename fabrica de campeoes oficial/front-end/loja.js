@@ -10,12 +10,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Carrossel de banner
-  const imagens = [
-    "imagens/banner1.jpg",
-    "imagens/banner2.jpg",
-    "imagens/banner3.jpg"
-  ];
+
+
   let index = 0;
   const banner = document.querySelector(".banner img");
   setInterval(() => {
