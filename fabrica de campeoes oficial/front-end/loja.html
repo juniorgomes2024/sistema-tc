@@ -34,6 +34,40 @@
           console.error('Erro ao buscar dados do usuário: ', error);
         });
     });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const sairButton = document.getElementById('sair');
+      if (sairButton) {
+        sairButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          fetch('../back-end/loja.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+              acao: 'destruir-sessao'
+            })
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.destruiuSessao) {
+                window.location.href = 'login.html';
+              } else {
+                console.error('Erro ao destruir a sessão do usuário: ', data);
+              }
+            })
+            .catch(error => {
+              if (error instanceof SyntaxError) {
+                console.error('Erro ao destruir a sessão do usuário: ', 'Resposta do servidor não é um JSON válido');
+              } else {
+                console.error('Erro ao destruir a sessão do usuário: ', error);
+              }
+            });
+        });
+      }
+    });
   </script>
 </head>
 <body>
