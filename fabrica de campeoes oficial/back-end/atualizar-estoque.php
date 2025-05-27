@@ -14,14 +14,23 @@ if ($conn->connect_error) {
 $id = $_POST['id'];
 $quantidade = $_POST['quantidade'];
 
-$sql = "UPDATE produto SET quantidade = ? WHERE idProduto = ?";
-$stmt = $conn->prepare($sql);
+// Consultar quantidade atual do produto
+$sqlConsulta = "SELECT quantidade FROM produto WHERE idProduto = ?";
+$stmtConsulta = $conn->prepare($sqlConsulta);
+$stmtConsulta->bind_param("i", $id);
+$stmtConsulta->execute();
+$stmtConsulta->bind_result($quantidadeAtual);
+$stmtConsulta->fetch();
+$stmtConsulta->close();
 
-$stmt->bind_param("ii", $quantidade, $id);
+// Atualizar quantidade do produto
+$novaQuantidade = $quantidadeAtual + $quantidade;
+$sqlUpdate = "UPDATE produto SET quantidade = ? WHERE idProduto = ?";
+$stmtUpdate = $conn->prepare($sqlUpdate);
+$stmtUpdate->bind_param("ii", $novaQuantidade, $id);
 
-if ($stmt->execute()) {
-  echo 'alert( "Estoque atualizado com sucesso.")';
-  echo "<script>window.location.href = '../front-end/estoque.html';</script>";
+if ($stmtUpdate->execute()) {
+  echo "<script>alert('Estoque atualizado com sucesso.'); window.location.href = '../front-end/estoque.html';</script>";
 } else {
   echo "Erro ao atualizar: " . $conn->error;
 }
