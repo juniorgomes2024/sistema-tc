@@ -19,6 +19,8 @@ $result = $conn->query($sql);
 <html lang="pt-br">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="../front-end/estoque.css" />
+
   <title>Estoque Atual</title>
   <style>
     table { border-collapse: collapse; width: 80%; margin: auto; }
@@ -31,31 +33,37 @@ $result = $conn->query($sql);
   <p><a href="../front-end/estoque.html">Cadastrar Estoque</a></p>
   <p><a href="../front-end/gestao.html">Dashboard</a></p>
 
-  <h1>Produtos em Estoque</h1>
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Nome</th>
-      <th>Descrição</th>
-      <th>Quantidade</th>
-      <th>Preço (R$)</th>
-    </tr>
-    <?php
-    if ($result->num_rows > 0) {
-      while($row = $result->fetch_assoc()) {
-        echo "<tr>
-          <td>{$row['idProduto']}</td>
-          <td>{$row['nome']}</td>
-          <td>{$row['descricao']}</td>
-          <td>{$row['quantidade']}</td>
-          <td>" . number_format($row['preco'], 2, ',', '.') . "</td>
-        </tr>";
+  <section class="table-container">
+    <h1>Produtos em Estoque</h1>
+    <table>
+      <tr>
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Descrição</th>
+        <th>Quantidade</th>
+        <th>Preço (R$)</th>
+      </tr>
+      <?php
+      if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+          echo "<tr>
+            <td>{$row['idProduto']}</td>
+            <td>{$row['nome']}</td>
+            <td>{$row['descricao']}</td>
+            <td>{$row['quantidade']}</td>
+            <td>" . number_format($row['preco'], 2, ',', '.') . "</td>
+          </tr>";
+        }
+      } else {
+        echo "<tr><td colspan='5'>Nenhum produto encontrado.</td></tr>";
       }
-    } else {
-      echo "<tr><td colspan='5'>Nenhum produto encontrado.</td></tr>";
-    }
-    $conn->close();
-    ?>
-  </table>
+      $conn->close();
+      ?>
+    </table>
+          <div class="padding-top" style="text-align:center;">
+            <button class="btn-atualizar"><i class="bx bx-refresh"></i> Atualizar Estoque</button>
+          </div>
+  </section>
+  
 </body>
 </html>
