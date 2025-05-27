@@ -8,17 +8,45 @@
   <link rel="stylesheet" href="loja.css" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <script src="loja.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../back-end/loja.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+          acao: 'get-sessao'
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.podeAcessar) {
+            document.getElementById('sair').style.display = 'block';
+            document.getElementById('login').style.display = 'none';
+          } else {
+            document.getElementById('sair').style.display = 'none';
+            document.getElementById('login').style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados do usuário: ', error);
+        });
+    });
+  </script>
 </head>
 <body>
 
   <header>
     <h1><i class="bx bx-store"></i> Loja Fábrica de Campeões</h1>
     <nav>
-      <a href="loja.html"><i class="bx bx-home"></i> Início</a>
+      <!-- <a href="loja.html"><i class="bx bx-home"></i> Início</a> -->
       <a href="gestao_login.html"><i class="bx bx-user-circle"></i> Gestão</a>
       <a href="carrinho.html"><i class="bx bx-cart"></i> Carrinho</a>
       <a href="cadastro.html"><i class="bx bx-user-plus"></i> Cadastro</a>
-      <a href="login.html"><i class="bx bx-log-in"></i> Login</a>
+      <a href="login.html" id="login"><i class="bx bx-log-in"></i> Login</a>
+      <a href="login.html" id="sair"><i class="bx bx-log-out"></i> Sair</a>
     </nav>
   </header>
   <section class="produtos">
