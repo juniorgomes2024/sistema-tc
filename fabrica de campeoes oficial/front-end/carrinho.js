@@ -103,8 +103,13 @@ function finalizarCompra(rating = null) {
     .then((data) => {
       console.log(data);
       localStorage.removeItem('carrinho');
-      //Redirecionamento
-      location.href = 'carrinho.html';
+      document.getElementById('modal-notifica-envio').style.display = 'block';
+      document.getElementById('protocolo-compra').textContent = data;
+      document.getElementById('modal-notifica-envio-close').addEventListener('click', () => {
+        document.getElementById('modal-notifica-envio').style.display = 'none';
+        //Redirecionamento
+        location.href = 'loja.html';
+      });
     })
     .catch(error => {
       console.error('There was a problem with the fetch operation:', error);
