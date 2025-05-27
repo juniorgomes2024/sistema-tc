@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       linha.innerHTML = `
         <td style="padding: 10px;">${item.nome}</td>
         <td>R$ ${item.preco.toFixed(2)}</td>
-        <td>${item.quantidade}</td>
+        <td><input type="number" id="quantidade-${index}" value="${item.quantidade}" min="1" max="99" onchange="atualizarQuantidade(${index}, this.value)"></td>
         <td>R$ ${subtotal.toFixed(2)}</td>
         <td><button onclick="removerItem(${index})">Remover</button></td>
       `;
@@ -25,6 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     valorTotal.textContent = `Valor total: R$ ${total.toFixed(2)}`;
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
+  }
+
+  window.atualizarQuantidade = function(index, novaQuantidade) {
+    carrinho[index].quantidade = parseInt(novaQuantidade);
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    atualizarCarrinho();
   }
 
   window.removerItem = function(index) {
