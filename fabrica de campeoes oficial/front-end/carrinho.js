@@ -101,7 +101,6 @@ function finalizarCompra(rating = null) {
       }
     })
     .then((data) => {
-      console.log(data);
       localStorage.removeItem('carrinho');
       document.getElementById('modal-notifica-envio').style.display = 'block';
       document.getElementById('protocolo-compra').textContent = data;
