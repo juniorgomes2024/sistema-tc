@@ -23,14 +23,14 @@ session_start();
 $globalUsuario = $_SESSION['usuario'];
 
 function cadastrarPedidoCarrinho($conn, $itens) {  
-    // Gera um id_compra para ser cadastrado no banco
-    $protCompra = uniqid('#');
-    
     global $globalUsuario;
     $idCliente = $globalUsuario['idCliente'];
     date_default_timezone_set('America/Sao_Paulo');
-    $dtPedido = date('Y-m-d H:i:s');
-
+    $dtHoraPedido = date('Y-m-d H:i:s');
+    $dtPedido = date('Y-m-d');
+    
+    // Gera um id_compra para ser cadastrado no banco
+    $protCompra = uniqid($dtPedido . '#');
     if ($idCliente == null) {
         http_response_code(401);
         echo "Usuário não autenticado.";
@@ -46,7 +46,7 @@ function cadastrarPedidoCarrinho($conn, $itens) {
         $vlCompra = $item['total'];
 
         $stmt = $conn->prepare("INSERT INTO pedido (idCliente, descricao, quantidade, dtPedido, idEstoque, vlCompra, avaliaCompra, protCompra) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("isisisis", $idCliente, $descricao, $quantidade, $dtPedido, $idEstoque, $vlCompra, $notaCompra, $protCompra);
+        $stmt->bind_param("isisisis", $idCliente, $descricao, $quantidade, $dtHoraPedido, $idEstoque, $vlCompra, $notaCompra, $protCompra);
         $stmt->execute();
     }
 
