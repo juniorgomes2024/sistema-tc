@@ -11,8 +11,8 @@ if ($conn->connect_error) {
   die("Conexão falhou: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM produto";
-$result = $conn->query($sql);
+$selectProdutos = "SELECT * FROM produto";
+$resultProdutos = $conn->query($selectProdutos);
 ?>
 
 <!DOCTYPE html>
@@ -44,8 +44,8 @@ $result = $conn->query($sql);
         <th>Preço (R$)</th>
       </tr>
       <?php
-      if ($result->num_rows > 0) {
-        while($row = $result->fetch_assoc()) {
+      if ($resultProdutos->num_rows > 0) {
+        while($row = $resultProdutos->fetch_assoc()) {
           echo "<tr>
             <td>{$row['idProduto']}</td>
             <td>{$row['nome']}</td>
@@ -61,7 +61,7 @@ $result = $conn->query($sql);
       ?>
     </table>
           <div class="padding-top" style="text-align:center;">
-            <button class="btn-atualizar"><i class="bx bx-refresh"></i> Atualizar Estoque</button>
+            <a href="../back-end/listar-estoque.php" class="btn-atualizar">Atualizar Estoque</a>
           </div>
   </section>
   
