@@ -103,7 +103,27 @@ function finalizarCompra(rating = null) {
     .then((data) => {
       localStorage.removeItem('carrinho');
       document.getElementById('modal-notifica-envio').style.display = 'block';
-      document.getElementById('protocolo-compra').textContent = data;
+      document.getElementById('protocolo-compra').textContent = data;// encaminhar data para email.php
+      console.log(data);
+        // Envia o protocolo para o arquivo email.php
+        fetch('../back-end/email.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ data })
+        })
+          .then(response => {
+            if (response.ok) {
+              console.log('Protocolo enviado com sucesso!');
+            } else {
+              throw new Error('Erro ao enviar protocolo para email.php');
+            }
+          })
+          .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+          });
+
       document.getElementById('modal-notifica-envio-close').addEventListener('click', () => {
         document.getElementById('modal-notifica-envio').style.display = 'none';
         //Redirecionamento
