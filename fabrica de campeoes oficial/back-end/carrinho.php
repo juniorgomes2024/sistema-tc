@@ -51,8 +51,7 @@ function cadastrarPedidoCarrinho($conn, $itens) {
     }
 
     http_response_code(200);
-    echo "Itens processados com sucesso.";
+    echo $protCompra;
 }
 
 cadastrarPedidoCarrinho($conn, $itens);
-
