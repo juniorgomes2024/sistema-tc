@@ -89,3 +89,7 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+.padding-top {
+  padding-top: 20px;
+}

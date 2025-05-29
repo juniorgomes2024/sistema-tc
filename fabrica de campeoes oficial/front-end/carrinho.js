@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
       linha.innerHTML = `
         <td style="padding: 10px;">${item.nome}</td>
         <td>R$ ${item.preco.toFixed(2)}</td>
-        <td>${item.quantidade}</td>
+        <td><input type="number" id="quantidade-${index}" value="${item.quantidade}" min="1" max="99" onchange="atualizarQuantidade(${index}, this.value)"></td>
         <td>R$ ${subtotal.toFixed(2)}</td>
         <td><button onclick="removerItem(${index})">Remover</button></td>
       `;
@@ -25,6 +25,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     valorTotal.textContent = `Valor total: R$ ${total.toFixed(2)}`;
     localStorage.setItem("carrinho", JSON.stringify(carrinho));
+  }
+
+  window.atualizarQuantidade = function(index, novaQuantidade) {
+    carrinho[index].quantidade = parseInt(novaQuantidade);
+    localStorage.setItem("carrinho", JSON.stringify(carrinho));
+    atualizarCarrinho();
   }
 
   window.removerItem = function(index) {
@@ -95,10 +101,34 @@ function finalizarCompra(rating = null) {
       }
     })
     .then((data) => {
-      console.log(data);
       localStorage.removeItem('carrinho');
-      //Redirecionamento
-      location.href = 'carrinho.html';
+      document.getElementById('modal-notifica-envio').style.display = 'block';
+      document.getElementById('protocolo-compra').textContent = data;// encaminhar data para email.php
+      console.log(data);
+        // Envia o protocolo para o arquivo email.php
+        fetch('../back-end/email.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ data })
+        })
+          .then(response => {
+            if (response.ok) {
+              console.log('Protocolo enviado com sucesso!');
+            } else {
+              throw new Error('Erro ao enviar protocolo para email.php');
+            }
+          })
+          .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+          });
+
+      document.getElementById('modal-notifica-envio-close').addEventListener('click', () => {
+        document.getElementById('modal-notifica-envio').style.display = 'none';
+        //Redirecionamento
+        location.href = 'loja.html';
+      });
     })
     .catch(error => {
       console.error('There was a problem with the fetch operation:', error);

@@ -8,17 +8,80 @@
   <link rel="stylesheet" href="loja.css" />
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
   <script src="loja.js" defer></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../back-end/loja.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({
+          acao: 'get-sessao'
+        })
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.podeAcessar) {
+            document.getElementById('sair').style.display = 'block';
+            document.getElementById('login').style.display = 'none';
+          } else {
+            document.getElementById('sair').style.display = 'none';
+            document.getElementById('login').style.display = 'block';
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao buscar dados do usuário: ', error);
+        });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const sairButton = document.getElementById('sair');
+      if (sairButton) {
+        sairButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          fetch('../back-end/loja.php', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+              acao: 'destruir-sessao'
+            })
+          })
+            .then(response => response.json())
+            .then(data => {
+              if (data.destruiuSessao) {
+                window.location.href = 'login.html';
+                localStorage.setItem("carrinho", JSON.stringify([]));
+              } else {
+                console.error('Erro ao destruir a sessão do usuário: ', data);
+              }
+            })
+            .catch(error => {
+              if (error instanceof SyntaxError) {
+                console.error('Erro ao destruir a sessão do usuário: ', 'Resposta do servidor não é um JSON válido');
+              } else {
+                console.error('Erro ao destruir a sessão do usuário: ', error);
+              }
+            });
+        });
+      }
+    });
+  </script>
 </head>
 <body>
 
   <header>
     <h1><i class="bx bx-store"></i> Loja Fábrica de Campeões</h1>
     <nav>
-      <a href="loja.html"><i class="bx bx-home"></i> Início</a>
+      <!-- <a href="loja.html"><i class="bx bx-home"></i> Início</a> -->
       <a href="gestao_login.html"><i class="bx bx-user-circle"></i> Gestão</a>
       <a href="carrinho.html"><i class="bx bx-cart"></i> Carrinho</a>
       <a href="cadastro.html"><i class="bx bx-user-plus"></i> Cadastro</a>
-      <a href="login.html"><i class="bx bx-log-in"></i> Login</a>
+      <a href="login.html" id="login"><i class="bx bx-log-in"></i> Login</a>
+      <a href="login.html" id="sair"><i class="bx bx-log-out"></i> Sair</a>
     </nav>
   </header>
   <section class="produtos">
@@ -48,42 +111,42 @@
       <h3>cartão visita</h3>
       <p>R$ 11,90</p>
       <p>ou a combinar</p>
-      <button class="add-carrinho" data-id="3" data-nome="cartão visita" data-preco="11.90">Adicionar no carrinho</button>
+      <button class="add-carrinho" data-id="4" data-nome="cartão visita" data-preco="11.90">Adicionar no carrinho</button>
     </div>
     <div class="produto">
       <img src="imagens/banner loja.png" alt="Etiqueta 5" width="150" />
       <h3>banner</h3>
       <p>R$ 59,99</p>
       <p>ou a combinar</p>
-      <button class="add-carrinho" data-id="3" data-nome="banner" data-preco="59.99">Adicionar no carrinho</button>
+      <button class="add-carrinho" data-id="5" data-nome="banner" data-preco="59.99">Adicionar no carrinho</button>
     </div>
     <div class="produto">
       <img src="imagens/logo time.png" alt="Etiqueta 6" width="150" />
       <h3>logo em geral</h3>
       <p>R$ 80,99</p>
       <p>ou a combinar</p>
-      <button class="add-carrinho" data-id="3" data-nome="logo time" data-preco="80.99">Adicionar no carrinho</button>
+      <button class="add-carrinho" data-id="6" data-nome="logo time" data-preco="80.99">Adicionar no carrinho</button>
     </div>
     <div class="produto">
       <img src="imagens/cartão aniverssario.png" alt="Etiqueta 7" width="150" />
       <h3>cartão aniverssario</h3>
       <p>R$ 10,90</p>
       <p>ou a combinar</p>
-      <button class="add-carrinho" data-id="3" data-nome="cartão aniverssario" data-preco="10.90">Adicionar no carrinho</button>
+      <button class="add-carrinho" data-id="7" data-nome="cartão aniverssario" data-preco="10.90">Adicionar no carrinho</button>
     </div>
     <div class="produto">
       <img src="imagens/embalagem.png" alt="Etiqueta 7" width="150" />
       <h3>embalagem</h3>
       <p>R$ 37,90</p>
       <p>ou a combinar</p>
-      <button class="add-carrinho" data-id="3" data-nome="embalagem" data-preco="37.90">Adicionar no carrinho</button>
+      <button class="add-carrinho" data-id="8" data-nome="embalagem" data-preco="37.90">Adicionar no carrinho</button>
     </div>
     <div class="produto">
       <img src="imagens/convite de casamento.png" alt="Etiqueta 7" width="150" />
       <h3>convites para eventos</h3>
       <p>R$ 19,99</p>
       <p>ou a combinar</p>
-      <button class="add-carrinho" data-id="3" data-nome="convite para eventos" data-preco="19.99">Adicionar no carrinho</button>
+      <button class="add-carrinho" data-id="9" data-nome="convite para eventos" data-preco="19.99">Adicionar no carrinho</button>
     </div>
   </section>
 

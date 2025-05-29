@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 class entradacliente{
     private $host = 'localhost';
     private $user = 'root';
@@ -27,6 +29,8 @@ class entradacliente{
 
         if(!$result){
             echo mysqli_error($connection);
+        }else{
+            $_SESSION['logged'] = true;
         }
 
         mysqli_close($connection);
@@ -38,6 +42,8 @@ class entradacliente{
 
         if(!$result){
             echo mysqli_error($connection);
+        }else{
+            $_SESSION['logged'] = true;
         }
 
         mysqli_close($connection);
