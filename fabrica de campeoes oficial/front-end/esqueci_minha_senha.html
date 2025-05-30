@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="cadastro.css">
+    <link rel="shortcut icon" href="imagens/favicon.jpeg" type="image/x-icon">
+    <script src="cadastro.js"></script>
+    <title>Recuperar Senha</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Recuperar Senha</h1>
+        <form id="recuperaSenhaForm">
+            <div class="input_box">
+                <input type="text" name="nome" placeholder="Nome" required>
+            </div>
+            <div class="input_box">
+                <input type="email" name="email" placeholder="E-mail" required>
+            </div>
+            <div class="input_box">
+                <input type="text" name="telefone" placeholder="Telefone" required>
+            </div>
+            <button type="submit" class="login">Recuperar Via E-mail</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('recuperaSenhaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            fetch('../back-end/recuperaSenha.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(data => {
+                console.log(data);
+                window.location.href = 'login.html?msg=userFound';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
+
