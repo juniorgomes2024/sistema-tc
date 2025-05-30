@@ -27,15 +27,26 @@ $mail = new PHPMailer(true);
 $email = $_POST['email'];
 $telefone = $_POST['telefone'];
 $nomeUser = $_POST['nome'];
+$isGestao = $_POST['origem'] ?? '';
 $senhaProvisoria = $nomeUser .'123';
 $senhaBanco = md5($senhaProvisoria);
 // senha 12345 = 827ccb0eea8a706c4c34a16891f84e7b
 
 $Bd = new entradacliente();
-$usuario = $Bd->select("SELECT * FROM cliente AS cl JOIN email AS em ON cl.idCliente = em.idCliente JOIN telefone AS tel ON cl.idCliente = tel.idCliente WHERE em.email = '$email' AND cl.nome = '$nomeUser' AND tel.numero = '$telefone'");
+
+if ($isGestao == 'gestao') {
+    $usuario = $Bd->select("SELECT * FROM adm WHERE email = '$email' AND nome = '$nomeUser' AND telefone = '$telefone'");
+}else{  
+    $usuario = $Bd->select("SELECT * FROM cliente AS cl JOIN email AS em ON cl.idCliente = em.idCliente JOIN telefone AS tel ON cl.idCliente = tel.idCliente WHERE em.email = '$email' AND cl.nome = '$nomeUser' AND tel.numero = '$telefone'");
+}
 
 if (!empty($usuario)) {
-    $sql = "UPDATE cliente SET senha = '$senhaBanco' WHERE nome = '$nomeUser'";
+    if ($isGestao == 'gestao') {
+        $sql = "UPDATE adm SET senha = '$senhaBanco' WHERE nome = '$nomeUser'";
+    }else{
+       $sql = "UPDATE cliente SET senha = '$senhaBanco' WHERE nome = '$nomeUser'"; 
+    }
+       
     $conn->query($sql);
 
     try {
