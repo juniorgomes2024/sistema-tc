@@ -15,4 +15,15 @@ document.addEventListener("DOMContentLoaded", function() {
         
         starsContainer.appendChild(star);
     }
+    
+    const url = new URL(window.location.href);
+    const msg = url.searchParams.get('msg');
+    if (msg === 'userFound') {
+        const modal = document.getElementById('modal-notifica-envio-email');
+        modal.style.display = 'block';
+        
+        document.getElementById('modal-notifica-envio-email-close').addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+    }
 });
