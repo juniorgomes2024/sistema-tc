@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Tempo de geração: 31/05/2025 às 00:09
+-- Tempo de geração: 03/06/2025 às 05:33
 -- Versão do servidor: 9.1.0
 -- Versão do PHP: 8.3.14
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `adm` (
 --
 
 INSERT INTO `adm` (`idAdmin`, `nome`, `email`, `senha`, `telefone`) VALUES
-(1, 'master', 'dego.dvl@gmail.com', '6797f82f504379e72c59879b12594d39', '62911112222');
+(1, 'master', 'fabricadecampeoestcc@gmail.com', '6797f82f504379e72c59879b12594d39', '62911112222');
 
 -- --------------------------------------------------------
 
@@ -117,7 +117,7 @@ INSERT INTO `cliente` (`idCliente`, `nome`, `cpfCnpj`, `dataNasc`, `senha`) VALU
 (23, 'saul', '0123456789', '2024-02-01', '81dc9bdb52d04dc20036dbd8313ed055'),
 (24, 'usuario', '77788899944', '2025-05-08', '827ccb0eea8a706c4c34a16891f84e7b'),
 (25, 'Rogers', '77788899944', '2025-05-07', '827ccb0eea8a706c4c34a16891f84e7b'),
-(26, 'Diego', '77788899944', '2025-05-03', 'c81b5cd5b382dfdcfbfff1ed9a164b10');
+(26, 'Default', '77788899944', '2025-05-03', '3dba52fcf7afd1d73a04c9ea70de6416');
 
 -- --------------------------------------------------------
 
@@ -144,7 +144,7 @@ INSERT INTO `email` (`idEmail`, `email`, `idCliente`) VALUES
 (22, 'saulmateusinho@gmail.com', 23),
 (23, 'teste@teste.com', 24),
 (24, 'userdefault@gmail.com', 25),
-(25, 'dego.dvl@gmail.com', 26);
+(25, 'fabricadecampeoestcc@gmail.com', 26);
 
 -- --------------------------------------------------------
 
@@ -187,10 +187,21 @@ CREATE TABLE IF NOT EXISTS `entrega` (
   `idEntrega` int NOT NULL AUTO_INCREMENT,
   `status` varchar(50) DEFAULT NULL,
   `dataPrevisao` date DEFAULT NULL,
-  `idPedido` int DEFAULT NULL,
+  `idPedido` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`idEntrega`),
   KEY `idPedido` (`idPedido`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=38 DEFAULT CHARSET=latin1;
+
+--
+-- Despejando dados para a tabela `entrega`
+--
+
+INSERT INTO `entrega` (`idEntrega`, `status`, `dataPrevisao`, `idPedido`) VALUES
+(37, 'enviado', '2025-06-23', '2025-05-29#6838e962c840a'),
+(36, 'enviado', '2025-06-23', '2025-05-30#68392e4f4a345'),
+(35, 'enviado', '2025-06-23', '2025-05-29#6838ee1093ae3'),
+(34, 'enviado', '2025-06-23', '2025-05-26#6835111b3373f'),
+(33, 'enviado', '2025-06-23', '2025-05-26#6835111b3373f');
 
 -- --------------------------------------------------------
 
@@ -230,7 +241,14 @@ CREATE TABLE IF NOT EXISTS `estoque` (
   `idEstoque` int NOT NULL AUTO_INCREMENT,
   `descricao` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`idEstoque`)
-) ENGINE=MyISAM AUTO_INCREMENT=78 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=79 DEFAULT CHARSET=latin1;
+
+--
+-- Despejando dados para a tabela `estoque`
+--
+
+INSERT INTO `estoque` (`idEstoque`, `descricao`) VALUES
+(78, 'Caneta Tinteiro Cor Azul');
 
 -- --------------------------------------------------------
 
@@ -259,10 +277,6 @@ CREATE TABLE IF NOT EXISTS `pedido` (
 --
 
 INSERT INTO `pedido` (`idPedido`, `descricao`, `quantidade`, `idCliente`, `idEstoque`, `dtPedido`, `vlCompra`, `avaliaCompra`, `protCompra`) VALUES
-(70, 'Etiqueta BOPP Transparente', 3, 23, 3, '2025-05-30 00:00:00', 62.70, 4, '#6834d13e2180f'),
-(69, 'Etiqueta Papel CouchÃª', 1, 22, 2, '2025-05-26 17:33:27', 19.90, 5, '#6834d017d5b1a'),
-(71, 'Etiqueta Adesiva Térmica', 1, 24, 1, '2025-05-28 21:20:49', 8.90, 5, '#68350561e6ea2'),
-(72, 'Etiqueta Adesiva Térmica', 1, 24, 1, '2025-05-27 21:30:32', 8.90, 5, '#683507a88d329'),
 (73, 'convite para eventos', 1, 24, 9, '2025-05-26 21:37:32', 19.99, 1, '2025-05-26#6835094c12df1'),
 (74, 'banner', 1, 24, 5, '2025-05-15 21:43:06', 59.99, 4, '2025-05-26#68350a9abb060'),
 (75, 'logo time', 1, 24, 6, '2025-05-26 21:44:04', 80.99, 5, '2025-05-26#68350ad4881aa'),
@@ -367,7 +381,7 @@ CREATE TABLE IF NOT EXISTS `produto` (
   `quantidade` int NOT NULL,
   PRIMARY KEY (`idProduto`),
   KEY `idCategoria` (`idCategoria`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Despejando dados para a tabela `produto`
@@ -382,7 +396,8 @@ INSERT INTO `produto` (`idProduto`, `nome`, `descricao`, `preco`, `imagem`, `idC
 (6, 'logo em geral', 'Logo', 80.99, NULL, NULL, 2937),
 (7, 'cartão aniverssario', 'Cartão', 10.90, NULL, NULL, 500),
 (8, 'embalagem', 'embalagem', 37.90, NULL, NULL, 9973),
-(9, 'convites para eventos', 'Convite', 19.99, NULL, NULL, -54);
+(9, 'convites para eventos', 'Convite', 19.99, NULL, NULL, -54),
+(16, 'Caneta', 'Caneta Tinteiro Cor Azul', 3.00, NULL, NULL, 200);
 
 -- --------------------------------------------------------
 
