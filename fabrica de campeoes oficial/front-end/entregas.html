@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="gestão.css" />
+  <link rel="shortcut icon" href="imagens/favicon.jpeg" type="image/x-icon" />
+  <script src="gestão.js" defer></script>
+  <title>Controle de Entregas | Gestão</title>
+  <script>
+    // Atualizar os dados do painel - Requisição AJAX
+    document.addEventListener("DOMContentLoaded", () => {
+      fetch('../back-end/entregas.php')
+        .then(response => response.json())
+        .then(data => {
+          //Ultimos Pedidos
+          const tbody = document.getElementById('ultimosPedidos');
+          data.ultimosPedidos.forEach(pedido => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${pedido.protCompra}</td>
+              <td>${pedido.nomeCliente}</td>
+              <td>${pedido.telefone}</td>
+              <td>${pedido.nomeProduto}</td>
+              <td>${pedido.status}</td>
+              <td>${pedido.status === 'enviado' ? '<span><img class="icone-verificado" src="imagens/verificado.png"></span>' : `<button class="enviar" id="${pedido.protCompra}">Enviar</button>`}</td>
+            `;
+            tbody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Erro ao buscar dados: ', error));
+    });
+  </script>
+</head>
+
+<body class="animated-background">
+  <div class="stars"></div>
+
+  <div class="container">
+    <header>
+      <h1>Controle de Entregas</h1>
+      <nav>
+        <a href="gestao.html" class="adm">Painel</a>
+        <a href="estoque.html" class="adm">Estoque</a>
+        <a href="loja.html" class="adm">Sair</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="table-container">
+        <h2>Solicitações de Compra</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Protocolo</th>
+              <th>Cliente</th>
+              <th>Telefone</th>
+              <th>Produto</th>
+              <th>Estatus</th>
+              <th><img class="icone-entrega" src="imagens/entrega.png" alt="Entrega" /></th>
+            </tr>
+          </thead>
+          <tbody id="ultimosPedidos">
+          </tbody>
+        </table>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal confirma entrega -->
+  <div id="modal-confirma-envio"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.4); z-index: 1000;">
+    <div class="modal-content"
+      style="background-color: #8f8888; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%; z-index: 1001;">
+      <h2>Confirmação de Entrega</h2>
+      <p>Tem certeza que deseja confirmar a entrega do item <span id="protocolo-compra"></span>?</p>
+      <button type="button" id="modal-confirma-envio-sim">Sim</button>
+      <button type="button" id="modal-confirma-envio-nao" onclick="modalConfirmaEnvio.style.display='none'">Não</button>
+    </div>
+  </div>
+</body>
+
+<script>
+  // Modal confirma entrega
+  const modalConfirmaEnvio = document.getElementById('modal-confirma-envio');
+  const modalConfirmaEnvioSim = document.getElementById('modal-confirma-envio-sim');
+
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("enviar")) {
+      const protocolo = event.target.id;
+      document.getElementById('protocolo-compra').textContent = protocolo;
+      modalConfirmaEnvio.style.display = 'block';
+    }
+  });
+
+  modalConfirmaEnvioSim.addEventListener('click', () => {
+      const protocolo = document.getElementById('protocolo-compra').textContent;
+      fetch('../back-end/enviar-entregas.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ protCompra: protocolo })
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao confirmar entrega: ' + response.statusText);
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.status === 'ok') {
+            alert('Pedido encaminhado!');
+            modalConfirmaEnvio.style.display = 'none';
+            location.reload();
+          } else if (data.status === 'sent') {
+            alert('Este pedido já foi enviado!');
+            modalConfirmaEnvio.style.display = 'none';
+            location.reload();
+          } else {
+            alert('Erro ao confirmar entrega: ' + data.mensagem);
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao confirmar entrega: ', error);
+        });
+    });
+</script>
