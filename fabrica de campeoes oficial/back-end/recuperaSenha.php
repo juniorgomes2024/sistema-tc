@@ -69,9 +69,9 @@ if (!empty($usuario)) {
 
         //Content
         $mail->isHTML(true);                                    //Set email format to HTML
-        $mail->Subject = 'Senha provisória - Fabrica de Campeões';                 //Assunto
-        $mail->Body    = 'Nova senha provisória: <b>' . $senhaProvisoria . '</b>';
-        $mail->AltBody = 'Nova senha provisória: ' . $senhaProvisoria;
+        $mail->Subject = 'Senha provisoria - Fabrica de Campeoes';                 //Assunto
+        $mail->Body    = 'Nova senha provisoria: <b>' . $senhaProvisoria . '</b>';
+        $mail->AltBody = 'Nova senha provisoria: ' . $senhaProvisoria;
 
         // Envia o e-mail
         $mail->send();
