@@ -170,6 +170,13 @@ img {
     border-radius: 10px;
 }
 
+.icone-entrega {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: auto;
+}
+
 /* Responsividade */
 @media (max-width: 768px) {
     header {
