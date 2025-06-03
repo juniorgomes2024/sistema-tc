@@ -170,9 +170,14 @@ img {
     border-radius: 10px;
 }
 
-.icone-entrega {
+.icone-entrega, .icone-verificado {
     width: 20px;
     height: 20px;
+    display: block;
+    margin: auto;
+}
+
+.enviar{
     display: block;
     margin: auto;
 }
