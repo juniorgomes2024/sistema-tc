@@ -1,0 +1,53 @@
+# Versão do PHP
+#php7.4.33
+#Ajustar variaveis de ambiente do sistema (wind)
+#C:\wamp64\bin\php\php7.4.33
+# vsc code ( ultima versão )
+#html5
+#css3
+#javascript
+
+
+#composer - Download
+# Rodar no diretório com composer.json para download dos pacotes
+#https://getcomposer.org/download/
+
+#Email: fabricadecampeoestcc@gmail.com
+#Senha: fabricatcc1
+
+# Usuario Master
+# Email: fabricadecampeoestcc@gmail.com
+# Nome: master
+# Senha: master.123
+# Telefone: 62911112222
+
+# Usuario Default
+# Email: fabricadecampeoestcc@gmail.com
+# Nome: Default
+# Senha: Default.123
+# Telefone: 99911112222
+
+# como funciona o sistema
+# 1 - O usuário acessa o sistema e se cadastra
+# 2 - O usuário acessa o sistema e faz login
+# 3 - O usuário acessa o sistema e entra na loja
+# 4 - O usuário acessa o sistema e faz uma compra
+# 5 - O usuário acessa o sistema e faz uma avaliação
+# 6 - O usuário acessa o sistema e finaliza a compra
+# 7 - O usuário acessa o sistema e visualiza o protocolo de compra no email.
+
+# como o codigo funciona
+# 1 - atualizar-estoque.php - Atualiza o estoque do produto
+# 2 - cadastro.php - Cadastra o usuário no sistema
+# 3 - login.php - Faz o login do usuário no sistema
+# 4 - loja.php - Exibe a loja com os produtos
+# 5 - carrinho.php - Realiza a compra do produto 
+# 6 - entradaadm.php - Login do administrador Verifica e autentica login e senha de um usuário com permissão administrativa Se os dados forem válidos, permite acesso ao painel do admin Função: restringir o acesso administrativo somente para usuários autorizados.
+# 7 - entradacliente.php - Login do usuário Verifica e autentica login e senha de um usuário comum Se os dados forem válidos, permite acesso ao painel do usuário Função: restringir o acesso de usuários comuns somente para usuários autorizados.
+# 8 - gestao.php - Painel do administrador Exibe informações administrativas, como usuários cadastrados, produtos, vendas, etc. Função: permitir que o administrador gerencie o sistema.
+#9 - enviar-entregas.php - Envia as entregas para o usuário Exibe informações sobre as entregas realizadas Função: permitir que o administrador envie as entregas para os usuários.
+# 10 - email.php - Envia e-mails para os usuários Exibe informações sobre os e-mails enviados Função: permitir que o administrador envie e-mails para os usuários.
+# 11 - listar-estoque.php - Lista o estoque dos produtos Exibe informações sobre o estoque dos produtos Função: permitir que o administrador visualize o estoque dos produtos.
+# 12 - recuperar-senha.php - Recupera a senha do usuário Exibe informações sobre a recuperação de senha Função: permitir que o usuário recupere sua senha caso tenha esquecido.
+# 13 - entraga.php - Exibe o protocolo de compra do usuário Exibe informações sobre a compra realizada Função: permitir que o usuário visualize o protocolo de compra.
+
