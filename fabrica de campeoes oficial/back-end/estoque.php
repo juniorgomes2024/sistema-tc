@@ -28,5 +28,15 @@ if ($stmt->execute()) {
   echo "Erro ao cadastrar: " . $conn->error;
 }
 
+$sql = "INSERT INTO estoque (descricao) VALUES (?)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $descricao);
+
+if ($stmt->execute()) {
+  echo "Estoque cadastrado com sucesso.";
+} else {
+  echo "Erro ao cadastrar: " . $conn->error;
+}
+
 $conn->close();
 ?>

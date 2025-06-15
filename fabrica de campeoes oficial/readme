@@ -1,0 +1,23 @@
+# Versão do PHP
+#php7.4.33
+#Ajustar variaveis de ambiente do sistema (wind)
+#C:\wamp64\bin\php\php7.4.33
+
+#composer - Download
+# Rodar no diretório com composer.json para download dos pacotes
+#https://getcomposer.org/download/
+
+#Email: fabricadecampeoestcc@gmail.com
+#Senha: fabricatcc1
+
+# Usuario Master
+# Email: fabricadecampeoestcc@gmail.com
+# Nome: master
+# Senha: master.123
+# Telefone: 62911112222
+
+# Usuario Default
+# Email: fabricadecampeoestcc@gmail.com
+# Nome: Default
+# Senha: Default.123
+# Telefone: 99911112222
