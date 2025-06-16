@@ -10,88 +10,100 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
   <title>Painel da Proprietária | Gestão</title>
   <script>
-    // Atualizar os dados do painel - Requisição AJAX
-    document.addEventListener("DOMContentLoaded", () => {
-      fetch('../back-end/gestao.php')
-        .then(response => response.json())
+  document.addEventListener("DOMContentLoaded", () => {
+    fetch('../back-end/gestao.php')
+      .then(response => response.json())
         .then(data => {
-          document.getElementById('totalPedidos').textContent = data.totalPedidos;
-          document.getElementById('totalClientes').textContent = data.totalClientes;
-          document.getElementById('faturamentoTotal').textContent = 'R$ ' + parseFloat(data.faturamentoTotal).toFixed(2);
-          document.getElementById('produtosEmEstoque').textContent = data.produtosEmEstoque;
-          document.getElementById('mediaAvaliacao').textContent = data.mediaAvaliacao + ' ★';
+        console.log('Dados recebidos:', data);
+        // Atualiza cards de resumo
+        document.getElementById('totalPedidos').textContent = data?.totalPedidos ?? '0';
+        document.getElementById('totalClientes').textContent = data?.totalClientes ?? '0';
+        document.getElementById('faturamentoTotal').textContent = 'R$ ' + parseFloat(data?.faturamentoTotal ?? 0).toFixed(2);
+        document.getElementById('produtosEmEstoque').textContent = data?.produtosEmEstoque ?? '0';
+        document.getElementById('mediaAvaliacao').textContent = (data?.mediaAvaliacao ?? '0') + ' ★';
 
-          //Ultimos Pedidos
-          const tbody = document.getElementById('ultimosPedidos');
-          data.ultimosPedidos.forEach(pedido => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-              <td>${pedido.protCompra}</td>
-              <td>${pedido.nomeCliente}</td>
-              <td>${pedido.telefone}</td>
-              <td>${pedido.dataPedido}</td>
-              <td>${pedido.nomeProduto}</td>
-              <td>${pedido.descricaoProduto}</td>
-            `;
-            tbody.appendChild(row);
-          });
+        // Preenche últimos pedidos
+        const tbody = document.getElementById('ultimosPedidos');
+        tbody.innerHTML = ''; // Evita duplicação
+        data.ultimosPedidos?.forEach(pedido => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${pedido.protCompra}</td>
+            <td>${pedido.nomeCliente}</td>
+            <td>${pedido.telefone}</td>
+            <td>${pedido.dataPedido}</td>
+            <td>${pedido.nomeProduto}</td>
+            <td>${pedido.descricaoProduto}</td>
+          `;
+          tbody.appendChild(row);
+        });
 
-          //Data Graficos
-          // document.getElementById('graficosGeral').textContent = data.consultaGeral;
-          const ctx = document.getElementById('myChart').getContext('2d');
-          const chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-              labels: data.consultaGeral.map(entry => entry.dataPedido),
-              datasets: [{
-                label: 'Vendas',
-                data: data.consultaGeral.map(entry => entry.totalVendas),
-                backgroundColor: [
-                  'rgba(255,218,185)'
-                ],
-                borderColor: [
-                  'rgba(255, 99, 132, 1)'
-                ],
-                borderWidth: 1
-              }]
-            },
-            options: {
-              responsive: true,
+        // Gera gráfico com Chart.js (v2 ou v3+)
+        const ctx = document.getElementById('myChart').getContext('2d');
+
+        const labels = data.consultaGeral?.map(entry => entry.dataPedido) ?? [];
+        const valores = data.consultaGeral?.map(entry => Number(entry.totalVendas)) ?? [];
+
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Vendas',
+              data: valores,
+              backgroundColor: 'rgba(255, 218, 185, 0.4)',
+              borderColor: 'rgba(255, 99, 132, 1)',
+              borderWidth: 2,
+              tension: 0.3,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
               title: {
                 display: true,
                 text: 'Vendas por Dia',
-                fontColor: 'white'
+                color: 'white',
+                font: {
+                  size: 18
+                }
               },
               legend: {
                 labels: {
-                  fontColor: 'white'
+                  color: 'white'
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: 'white'
+                },
+                grid: {
+                  color: 'rgba(255,255,255,0.1)'
                 }
               },
-              scales: {
-                yAxes: [{
-                  ticks: {
-                    beginAtZero: true,
-                    fontColor: 'white'
-                  },
-                  gridLines: {
-                    color: 'rgba(255, 255, 255, 0.1)'
-                  }
-                }],
-                xAxes: [{
-                  ticks: {
-                    fontColor: 'white'
-                  },
-                  gridLines: {
-                    color: 'rgba(255, 255, 255, 0.1)'
-                  }
-                }]
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: 'white'
+                },
+                grid: {
+                  color: 'rgba(255,255,255,0.1)'
+                }
               }
             }
-          });
-        })
-        .catch(error => console.error('Erro ao buscar dados: ', error));
-    });
-  </script>
+          }
+        });
+      })
+      .catch(error => {
+        console.error('Erro ao buscar dados:', error);
+        <!-- alert('Erro ao carregar dados do dashboard. Verifique sua conexão ou tente mais tarde.'); -->
+      });
+  });
+</script>
+
 </head>
 
 <body class="animated-background">
